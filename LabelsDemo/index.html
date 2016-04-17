@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="labelEditor">
+<head>
+    <title></title>
+</head>
+<body>
+
+    <div ng-controller="labelCollection as vm">
+        <ul>
+            <li ng-repeat="label in vm.sequence">
+                <span contenteditable
+                      ng-model="label.Text"
+                      ng-change="vm.update(label)"
+                      ng-model-options="{debounce: 250}"
+                      ng-style="{'background-color' : label.Color}">
+                </span>
+            </li>
+        </ul>
+        <div>
+            New Label:
+            <form class="form-inline">
+                <label for="colorValue">Color:</label>
+                <input type="color" name="colorValue" ng-model="vm.newColorValue" />
+                <label for="labelMessage">Message:</label>
+                <input type="text" name="labelMessage" ng-model="vm.newLabelMessage" />
+                <button ng-click="vm.addColor()">Add Label</button>
+            </form>
+        </div>
+
+
+    </div>
+
+    <script src="Scripts/angular.js"></script>
+    <script src="Scripts/angular-resource.js"></script>
+    <script src="App_Scripts/labelEditor.js"></script>
+    <script src="App_Scripts/labelCollection.js"></script>
+    <script src="App_Scripts/contentEditable.js"></script>
+    <script src="App_Scripts/labelDataService.js"></script>
+</body>
+</html>
