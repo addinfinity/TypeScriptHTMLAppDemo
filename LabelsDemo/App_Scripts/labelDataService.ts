@@ -11,8 +11,8 @@ module LabelApplication {
         return new LabelDataService(r);
     }]);
 
-    interface ILabelResourceClass extends ngr.IResourceClass<ngr.IResource<Rest.Label>> {
-        create(label: Rest.Label);
+    interface ILabelResourceClass extends ngr.IResourceClass<Rest.Label> {
+        create(label: Rest.Label, success: Function);
     }
 
     export class LabelDataService {
@@ -30,6 +30,7 @@ module LabelApplication {
                     query: { method: "GET", isArray: true },
                     delete: { method: "DELETE" }
                 });
+            this.retriveAllLabels();
         }
 
         public setUpdateHandler(evHandler: (labels: Array<Rest.Label>) => void){
@@ -45,12 +46,16 @@ module LabelApplication {
         }
 
         public updateLabel(label: Rest.Label) {
-            return this.resource.save({ id: label.Id }, label);
+            return this.resource.save({ id: label.Id }, label, () => this.retriveAllLabels());
         }
 
-        public addColor(label: Rest.Label) {
-            this.resource.create(label);
-            return this.resource.query();
+        public addColor(color:string, message:string) {
+            var item = <Rest.Label>{Id: 0, Color: color, Text:message };
+            this.resource.create(item, ()=> this.retriveAllLabels());
+        }
+
+        public deleteLabel(id: number) {
+            this.resource.delete({ Id: id}, ()=> this.retriveAllLabels());
         }
     }
 }

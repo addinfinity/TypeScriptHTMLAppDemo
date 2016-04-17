@@ -2,12 +2,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml" ng-app="labelEditor">
 <head>
     <title></title>
+    <link href="Content/bootstrap.css" rel="stylesheet" />
 </head>
-<body>
+<body class="container"> 
 
-    <div ng-controller="labelCollection as vm">
+    <div class="list-inline" ng-controller="labelCollection as vm">
         <ul>
-            <li ng-repeat="label in vm.sequence">
+            <li class="list-unstyled" ng-repeat="label in vm.sequence">
+                <button class="btn btn-sm btn-danger" ng-click="vm.delete(label)">Delete</button>
+                <span ng-bind="label.Id"></span>
                 <span contenteditable
                       ng-model="label.Text"
                       ng-change="vm.update(label)"
@@ -19,11 +22,11 @@
         <div>
             New Label:
             <form class="form-inline">
-                <label for="colorValue">Color:</label>
-                <input type="color" name="colorValue" ng-model="vm.newColorValue" />
-                <label for="labelMessage">Message:</label>
-                <input type="text" name="labelMessage" ng-model="vm.newLabelMessage" />
-                <button ng-click="vm.addColor()">Add Label</button>
+                <label class="label" for="colorValue">Color:</label>
+                <input class="input-sm" type="color" name="colorValue" ng-model="vm.newColorValue" />
+                <label class="label" for="labelMessage">Message:</label>
+                <input class="input-sm" type="text" name="labelMessage" ng-model="vm.newLabelMessage" />
+                <button class="btn btn-sm btn-primary" ng-click="vm.addColor()"><span class="glyphicon glyphicon-floppy-save"></span> Add Label</button>
             </form>
         </div>
 

@@ -5,9 +5,10 @@ var LabelApplication;
 (function (LabelApplication) {
     var LabelCollection = (function () {
         function LabelCollection($scope, service) {
+            var _this = this;
             this.$scope = $scope;
             this.service = service;
-            this.sequence = service.retriveAllLabels();
+            service.setUpdateHandler(function (r) { return _this.sequence = r; });
         }
         Object.defineProperty(LabelCollection.prototype, "newColorValue", {
             get: function () {
@@ -32,13 +33,13 @@ var LabelApplication;
         LabelCollection.prototype.update = function (label) {
             this.service.updateLabel(label);
         };
+        LabelCollection.prototype.delete = function (label) {
+            this.service.deleteLabel(label.Id);
+        };
         LabelCollection.prototype.addColor = function () {
-            var item = {
-                Id: 6,
-                Text: this._labelMessage,
-                Color: this._colorValue
-            };
-            this.sequence = this.service.addColor(item);
+            this.service.addColor(this._colorValue, this._labelMessage);
+            this._colorValue = "";
+            this._labelMessage = "";
         };
         return LabelCollection;
     }());

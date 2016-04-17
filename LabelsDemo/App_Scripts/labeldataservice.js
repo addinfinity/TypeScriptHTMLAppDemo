@@ -15,16 +15,30 @@ var LabelApplication;
                 query: { method: "GET", isArray: true },
                 delete: { method: "DELETE" }
             });
+            this.retriveAllLabels();
         }
+        LabelDataService.prototype.setUpdateHandler = function (evHandler) {
+            this.onUpdate = evHandler;
+        };
         LabelDataService.prototype.retriveAllLabels = function () {
-            return this.resource.query();
+            var _this = this;
+            return this.resource.query().$promise.then(function (result) {
+                _this.currentData = result;
+                _this.onUpdate(_this.currentData);
+            });
         };
         LabelDataService.prototype.updateLabel = function (label) {
-            return this.resource.save({ id: label.Id }, label);
+            var _this = this;
+            return this.resource.save({ id: label.Id }, label, function () { return _this.retriveAllLabels(); });
         };
-        LabelDataService.prototype.addColor = function (label) {
-            this.resource.create(label);
-            return this.resource.query();
+        LabelDataService.prototype.addColor = function (color, message) {
+            var _this = this;
+            var item = { Id: 0, Color: color, Text: message };
+            this.resource.create(item, function () { return _this.retriveAllLabels(); });
+        };
+        LabelDataService.prototype.deleteLabel = function (id) {
+            var _this = this;
+            this.resource.delete({ Id: id }, function () { return _this.retriveAllLabels(); });
         };
         return LabelDataService;
     }());

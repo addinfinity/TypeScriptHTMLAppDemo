@@ -8,10 +8,10 @@ module LabelApplication {
         constructor(private $scope: ng.IScope,
             private service: LabelDataService) {
 
-            this.sequence = service.retriveAllLabels();
+            service.setUpdateHandler((r) => this.sequence = r);
         }
 
-        sequence: ng.resource.IResourceArray<ng.resource.IResource<LabelApplication.Rest.Label>>;
+        sequence: Array<LabelApplication.Rest.Label>;
         private _colorValue: string;
 
         get newColorValue() {
@@ -33,15 +33,14 @@ module LabelApplication {
             this.service.updateLabel(label);
         }
 
+        public delete(label: Rest.Label) {
+            this.service.deleteLabel(label.Id);
+        }
+
         public addColor() {
-            var item: Rest.Label = {
-                Id: 6,
-                Text: this._labelMessage,
-                Color: this._colorValue
-            };
-
-            this.sequence = this.service.addColor(item);
-
+            this.service.addColor(this._colorValue, this._labelMessage);
+            this._colorValue = "";
+            this._labelMessage = "";
         }
     }
 

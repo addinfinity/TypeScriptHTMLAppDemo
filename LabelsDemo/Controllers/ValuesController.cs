@@ -37,7 +37,7 @@ namespace LabelsDemo.Controllers
         // POST api/values
         public void Post([FromBody]Label value)
         {
-            int nextID = labels.Count;
+            int nextID = labels.Count + 1;
             labels.Add(new Label
             {
                 Id = nextID,
